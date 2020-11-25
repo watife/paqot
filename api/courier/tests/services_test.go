@@ -10,8 +10,8 @@ import (
 func NewFixtureCourier() *courier.Courier {
 	return &courier.Courier{
 		ID:             courier.NewID(),
-		FirstName:      "Ozzy",
-		LastName:       "Osbourne",
+		FirstName:      "Boluwatife",
+		LastName:       "Fakorede",
 		CreatedAt:      time.Now(),
 		CountryCode:    "+234",
 		DOB:            "1996-03-17",
@@ -22,7 +22,7 @@ func NewFixtureCourier() *courier.Courier {
 }
 
 func TestService_Create(t *testing.T) {
-	repo := newInmem()
+	repo := courier.NewInmem()
 	m := courier.NewService(repo)
 	c := NewFixtureCourier()
 	_, err := m.CreateCourier(c)

@@ -32,7 +32,7 @@ func (r *Pg) Create(c *Courier) (*Courier, error) {
 func (r *Pg) FindByID(id ID) (*Courier, error) {
 	cd := &Courier{}
 	if err := r.db.Where("ID = ?", id ).Take(&cd).Error; err != nil {
-		return nil, err
+		return nil, ErrCourierNotFound
 	}
 	return cd, nil
 }
