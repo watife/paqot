@@ -1,0 +1,7 @@
+mode: set
+github.com/fakorede-bolu/deliva/api/jobs/tests/inmem.go:13.24,18.2 2 0
+github.com/fakorede-bolu/deliva/api/courier/tests/inmem.go:11.24,16.2 2 1
+github.com/fakorede-bolu/deliva/api/courier/tests/inmem.go:19.70,22.2 2 1
+github.com/fakorede-bolu/deliva/api/courier/tests/inmem.go:24.67,25.23 1 0
+github.com/fakorede-bolu/deliva/api/courier/tests/inmem.go:28.98,29.23 1 0
+github.com/fakorede-bolu/deliva/api/courier/tests/inmem.go:32.55,33.23 1 0

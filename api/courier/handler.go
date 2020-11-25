@@ -18,8 +18,10 @@ func CreateNewCourier(s Service) http.Handler  {
 			return
 		}
 
-		if ok, err := h.ValidateInputs(*c); !ok {
-			h.ValidationError(w, http.StatusUnprocessableEntity, err)
+		ok, errs := h.ValidateInputs(*c)
+
+		if !ok {
+			h.ValidationError(w, http.StatusUnprocessableEntity, errs)
 			return
 		}
 
