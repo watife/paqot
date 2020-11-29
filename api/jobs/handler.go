@@ -1,15 +1,16 @@
 package jobs
 
 import (
+	"deliva/api/entities"
+	h "deliva/pkg/helpers"
 	"encoding/json"
-	h "github.com/fakorede-bolu/deliva/pkg/helpers"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 func CreateNewJob(s Service) http.Handler  {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		j := &Jobs{}
+		j := &entities.Jobs{}
 		decoder := json.NewDecoder(r.Body)
 		err := decoder.Decode(j)
 
@@ -37,7 +38,7 @@ func CreateNewJob(s Service) http.Handler  {
 
 func AssignCourierToJob(s Service) http.Handler  {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		j := &JobCourier{}
+		j := &entities.JobCourier{}
 		decoder := json.NewDecoder(r.Body)
 		err := decoder.Decode(j)
 

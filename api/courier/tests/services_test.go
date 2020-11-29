@@ -1,15 +1,16 @@
 package tests
 
 import (
-	"github.com/fakorede-bolu/deliva/api/courier"
+	"deliva/api/courier"
+	"deliva/api/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
 
-func NewFixtureCourier() *courier.Courier {
-	return &courier.Courier{
-		ID:             courier.NewID(),
+func NewFixtureCourier() *entities.Courier {
+	return &entities.Courier{
+		ID:             entities.NewID(),
 		FirstName:      "Boluwatife",
 		LastName:       "Fakorede",
 		CreatedAt:      time.Now(),

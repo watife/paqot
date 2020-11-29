@@ -1,9 +1,10 @@
 package tests
 
 import (
-	"github.com/fakorede-bolu/deliva/api/courier"
-	"github.com/fakorede-bolu/deliva/api/customer"
-	"github.com/fakorede-bolu/deliva/api/jobs"
+	"deliva/api/courier"
+	"deliva/api/customer"
+	"deliva/api/entities"
+	"deliva/api/jobs"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -16,8 +17,8 @@ func TestService_Create(t *testing.T) {
 	j := NewFakeJob()
 
 	t.Run("customer not found", func(t *testing.T) {
-		c := &customer.Customer{
-			ID: customer.NewID(),
+		c := &entities.Customer{
+			ID: entities.NewID(),
 		}
 
 		_, err := customerService.FindCustomerByID(c.ID)
@@ -26,8 +27,8 @@ func TestService_Create(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		c := &customer.Customer{
-			ID: customer.NewID(),
+		c := &entities.Customer{
+			ID: entities.NewID(),
 		}
 
 		cus, err := customerService.CreateCustomer(c)
@@ -58,8 +59,8 @@ func TestService_FindJobByID(t *testing.T)  {
 	m := jobs.NewService(repo, courierService, customerService)
 
 	t.Run("job not found", func(t *testing.T) {
-		j := &jobs.Jobs{
-			ID: customer.NewID(),
+		j := &entities.Jobs{
+			ID: entities.NewID(),
 		}
 		_, err := m.FindJobByID(j.ID)
 		assert.Equal(t, jobs.ErrNotFound, err)
@@ -67,8 +68,8 @@ func TestService_FindJobByID(t *testing.T)  {
 
 	t.Run("success", func(t *testing.T) {
 		j := NewFakeJob()
-		c := &customer.Customer{
-			ID: customer.NewID(),
+		c := &entities.Customer{
+			ID: entities.NewID(),
 		}
 		cus, err := customerService.CreateCustomer(c)
 		assert.Nil(t, err)
@@ -95,20 +96,20 @@ func TestService_AssignCourierToJob(t *testing.T)  {
 	jo := NewFakeJob()
 
 	t.Run("job not found", func(t *testing.T) {
-		c := &courier.Courier{
-			ID: courier.NewID(),
+		c := &entities.Courier{
+			ID: entities.NewID(),
 		}
 		_, err := m.AssignCourierToJob(jo.ID, c.ID)
 		assert.Equal(t, courier.ErrCourierNotFound, err)
 	})
 
 	t.Run("success", func(t *testing.T) {
-		c := &courier.Courier{
-			ID: courier.NewID(),
+		c := &entities.Courier{
+			ID: entities.NewID(),
 		}
 
-		cus := &customer.Customer{
-			ID: customer.NewID(),
+		cus := &entities.Customer{
+			ID: entities.NewID(),
 		}
 
 		cust, err := customerService.CreateCustomer(cus)

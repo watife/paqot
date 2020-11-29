@@ -1,6 +1,7 @@
 package customer
 
 import (
+	"deliva/api/entities"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +15,7 @@ func NewCustomerPg(db *gorm.DB) *Pg {
 	}
 }
 
-func (r *Pg) Create(c *Customer) (*Customer, error) {
+func (r *Pg) Create(c *entities.Customer) (*entities.Customer, error) {
 	cor, err := r.FindByPhoneNumber(c.PhoneNumber, c.CountryCode)
 
 	if cor != nil {
@@ -29,16 +30,16 @@ func (r *Pg) Create(c *Customer) (*Customer, error) {
 	return c, nil
 }
 
-func (r *Pg) FindByID(id ID) (*Customer, error) {
-	cu := &Customer{}
-	if err := r.db.Where("ID = ?", id ).Take(&cu).Error; err != nil {
+func (r *Pg) FindByID(id entities.ID) (*entities.Customer, error) {
+	cu := &entities.Customer{}
+	if err := r.db.Preload("Jobs").Where("ID = ?", id ).Take(&cu).Error; err != nil {
 		return nil, ErrCustomerNotFound
 	}
 	return cu, nil
 }
 
-func (r *Pg) FindByPhoneNumber(phoneNumber int, countryCode string) (*Customer, error) {
-	cd := &Customer{}
+func (r *Pg) FindByPhoneNumber(phoneNumber int, countryCode string) (*entities.Customer, error) {
+	cd := &entities.Customer{}
 	if err := r.db.Where("phone_number = ? AND country_code = ?",phoneNumber,countryCode).Take(&cd).Error; err != nil {
 		return nil, ErrCustomerNotFound
 	}

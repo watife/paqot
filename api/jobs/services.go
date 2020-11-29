@@ -1,15 +1,17 @@
 package jobs
 
 import (
-	"github.com/fakorede-bolu/deliva/api/courier"
-	"github.com/fakorede-bolu/deliva/api/customer"
+	"deliva/api/courier"
+	"deliva/api/customer"
+	"deliva/api/entities"
 )
 
 // Service defines the courier services
 type Service interface {
-	CreateJob(o *Jobs) (*Jobs, error)
-	AssignCourierToJob(ID, courierID ID) (bool, error)
-	FindJobByID(ID ID) (*Jobs, error)
+	CreateJob(o *entities.Jobs) (*entities.Jobs, error)
+	AssignCourierToJob(ID, courierID entities.ID) (bool, error)
+	FindJobByID(ID entities.ID) (*entities.Jobs, error)
+	FindCustomerJob(customerID entities.ID) (*entities.Jobs, error)
 }
 
 //Service struct
@@ -28,44 +30,69 @@ func NewService(r Repository, c courier.Service, cu customer.Service) *service {
 	}
 }
 
-func (s *service) CreateJob(o *Jobs) (*Jobs, error) {
-	ord, err := NewJob(o)
+func (s *service) CreateJob(o *entities.Jobs) (*entities.Jobs, error) {
+	job, err := entities.NewJob(o)
 
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = s.customerService.FindCustomerByID(ord.CustomerID)
+	_, err = s.customerService.FindCustomerByID(job.CustomerID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return s.repo.Create(ord)
+	jo, err := s.FindCustomerJob(job.CustomerID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if jo.Status != true {
+		return nil, ErrTooManyJobs
+	}
+
+	return s.repo.Create(job)
 }
 
-func (s *service) AssignCourierToJob(ID, courierID ID) (bool, error) {
-	_, err := s.courierService.FindByID(courierID)
+func (s *service) AssignCourierToJob(ID, courierID entities.ID) (bool, error) {
+	cou, err := s.courierService.FindByID(courierID)
 
 	if err != nil {
 		return false, err
 	}
 
-	ord, err := s.FindJobByID(ID)
+	if cou.Availability != true {
+		return false, ErrCourierAvailable
+	}
+
+	jo, err := s.FindJobByID(ID)
 
 	if err != nil {
 		return false, err
 	}
 
-	if ord.Status != false {
+	if jo.Status != false {
 		return false, ErrJobStatus
+	}
+
+	_, err = s.courierService.ManageAvailabilityStatus(courierID, false)
+
+	if err != nil {
+		return false, err
 	}
 
 	return s.repo.AssignCourierToJob(ID, courierID)
 }
 
-func  (s *service) FindJobByID(ID ID) (*Jobs, error){
+func  (s *service) FindJobByID(ID entities.ID) (*entities.Jobs, error){
 	return s.repo.FindJobByID(ID)
 }
+
+func  (s *service) FindCustomerJob(customerID entities.ID) (*entities.Jobs, error){
+	return s.repo.FindCustomerJob(customerID)
+}
+
 
 

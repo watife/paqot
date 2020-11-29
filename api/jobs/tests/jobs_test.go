@@ -1,14 +1,15 @@
 package tests
 
 import (
-	"github.com/fakorede-bolu/deliva/api/jobs"
-	"github.com/fakorede-bolu/deliva/pkg/helpers"
+	"deliva/api/entities"
+	"deliva/api/jobs"
+	"deliva/pkg/helpers"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func NewFakeJob() *jobs.Jobs  {
-	return &jobs.Jobs{
+func NewFakeJob() *entities.Jobs {
+	return &entities.Jobs{
 		ID: helpers.NewID(),
 		CustomerID: helpers.NewID(),
 		Description: "I need someone to help deliver this product",
@@ -21,16 +22,16 @@ func NewFakeJob() *jobs.Jobs  {
 	}
 }
 
-func NewFakeJobCourier() *jobs.JobCourier {
-	return &jobs.JobCourier{
-		ID: jobs.NewID(),
-		CourierID: jobs.NewID(),
+func NewFakeJobCourier() *entities.JobCourier {
+	return &entities.JobCourier{
+		ID: entities.NewID(),
+		CourierID: entities.NewID(),
 	}
 }
 
 func TestNewJob(t *testing.T) {
 	c := NewFakeJob()
-	u, err := jobs.NewJob(c)
+	u, err := entities.NewJob(c)
 	assert.Nil(t, err)
 	assert.NotNil(t, u.ID)
 

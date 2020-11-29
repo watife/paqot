@@ -1,15 +1,16 @@
 package courier
 
 import (
+	"deliva/api/entities"
+	h "deliva/pkg/helpers"
 	"encoding/json"
-	h "github.com/fakorede-bolu/deliva/pkg/helpers"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 func CreateNewCourier(s Service) http.Handler  {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		c := &Courier{}
+		c := &entities.Courier{}
 		decoder := json.NewDecoder(r.Body)
 		err := decoder.Decode(c)
 

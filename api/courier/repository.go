@@ -1,8 +1,11 @@
 package courier
 
+import "deliva/api/entities"
+
 type Repository interface {
-	Create(c *Courier) (*Courier, error)
-	FindByID(id ID) (*Courier, error)
-	FindByPhoneNumber(phoneNumber int, countryCode string) (*Courier, error)
-	FindAll() ([]*Courier, error)
+	Create(c *entities.Courier) (*entities.Courier, error)
+	FindByID(id entities.ID) (*entities.Courier, error)
+	FindByPhoneNumber(phoneNumber int, countryCode string) (*entities.Courier, error)
+	FindAll() ([]*entities.Courier, error)
+	AvailabilityStatus(ID entities.ID, status bool) (bool, error)
 }

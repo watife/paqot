@@ -2,9 +2,9 @@ package tests
 
 import (
 	"bytes"
+	"deliva/api/courier"
+	h "deliva/pkg/helpers"
 	"encoding/json"
-	"github.com/fakorede-bolu/deliva/api/courier"
-	h "github.com/fakorede-bolu/deliva/pkg/helpers"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http"
