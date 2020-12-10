@@ -1,9 +1,12 @@
 package courier
 
+import "deliva/api/entities"
+
 // Service defines the courier services
 type Service interface {
-	CreateCourier(c *Courier) (*Courier, error)
-	FindByID(ID ID) (*Courier, error)
+	CreateCourier(c *entities.Courier) (*entities.Courier, error)
+	FindByID(ID entities.ID) (*entities.Courier, error)
+	ManageAvailabilityStatus(ID entities.ID, status bool) (bool, error)
 }
 
 //Service struct
@@ -18,8 +21,8 @@ func NewService(r Repository) *service {
 	}
 }
 
-func (s *service) CreateCourier(c *Courier) (*Courier, error) {
-	cor, err := NewCourier(c)
+func (s *service) CreateCourier(c *entities.Courier) (*entities.Courier, error) {
+	cor, err := entities.NewCourier(c)
 
 	if err != nil {
 		return nil, err
@@ -28,6 +31,10 @@ func (s *service) CreateCourier(c *Courier) (*Courier, error) {
 	return s.repo.Create(cor)
 }
 
-func (s *service) FindByID(ID ID) (*Courier, error)  {
+func (s *service) FindByID(ID entities.ID) (*entities.Courier, error)  {
 	return s.repo.FindByID(ID)
+}
+
+func (s *service) ManageAvailabilityStatus(ID entities.ID, status bool) (bool, error)  {
+	return s.repo.AvailabilityStatus(ID, status)
 }

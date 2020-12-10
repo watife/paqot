@@ -1,10 +1,9 @@
-package tests
+package courier
 
 import (
 	"bytes"
+	h "deliva/pkg/helpers"
 	"encoding/json"
-	"github.com/fakorede-bolu/deliva/api/courier"
-	h "github.com/fakorede-bolu/deliva/pkg/helpers"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http"
@@ -19,8 +18,8 @@ func checkError(err error, t *testing.T) {
 }
 
 func Test_CreateNewCourier(t *testing.T) {
-	repo := courier.NewInmem()
-	service := courier.NewService(repo)
+	repo := NewInmem()
+	service := NewService(repo)
 	c := NewFixtureCourier()
 	reqBodyBytes := new(bytes.Buffer)
 	err := json.NewEncoder(reqBodyBytes).Encode(c)
@@ -41,7 +40,7 @@ func Test_CreateNewCourier(t *testing.T) {
 
 	r := mux.NewRouter()
 
-	courier.MakeCourierHandlers(r, service)
+	MakeCourierHandlers(r, service)
 
 	path, err := r.GetRoute("createCourier").GetPathTemplate()
 
@@ -55,7 +54,7 @@ func Test_CreateNewCourier(t *testing.T) {
 	assert.NotNil(t, cor.ID)
 	assert.Equal(t, 8089333186, cor.PhoneNumber)
 
-	ht := courier.CreateNewCourier(service)
+	ht := CreateNewCourier(service)
 
 	ts := httptest.NewServer(ht)
 

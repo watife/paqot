@@ -1,23 +1,23 @@
-package tests
+package jobs
 
 import (
-	"github.com/fakorede-bolu/deliva/api/courier"
-	"github.com/fakorede-bolu/deliva/api/customer"
-	"github.com/fakorede-bolu/deliva/api/jobs"
+	"deliva/api/courier"
+	"deliva/api/customer"
+	"deliva/api/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestService_Create(t *testing.T) {
-	repo := jobs.NewInmem()
+	repo := NewInmem()
 	courierService := courier.NewService(courier.NewInmem())
 	customerService := customer.NewService(customer.NewInmem())
-	m := jobs.NewService(repo, courierService, customerService)
+	m := NewService(repo, courierService, customerService)
 	j := NewFakeJob()
 
 	t.Run("customer not found", func(t *testing.T) {
-		c := &customer.Customer{
-			ID: customer.NewID(),
+		c := &entities.Customer{
+			ID: entities.NewID(),
 		}
 
 		_, err := customerService.FindCustomerByID(c.ID)
@@ -26,8 +26,8 @@ func TestService_Create(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		c := &customer.Customer{
-			ID: customer.NewID(),
+		c := &entities.Customer{
+			ID: entities.NewID(),
 		}
 
 		cus, err := customerService.CreateCustomer(c)
@@ -41,34 +41,37 @@ func TestService_Create(t *testing.T) {
 			assert.Equal(t, customer.ErrCustomerNotFound, err)
 		}
 
+		_ , err = m.FindCustomerJob(j.CustomerID)
+		assert.Nil(t, err)
+
 		j.CustomerID = cus.ID
 		_, err = m.CreateJob(j)
 
 		if err != nil {
-			assert.Equal(t,jobs.ErrJobFailed, err)
+			assert.Equal(t, ErrJobFailed, err)
 		}
 		assert.Nil(t, err)
 	})
 }
 
 func TestService_FindJobByID(t *testing.T)  {
-	repo := jobs.NewInmem()
+	repo := NewInmem()
 	courierService := courier.NewService(courier.NewInmem())
 	customerService := customer.NewService(customer.NewInmem())
-	m := jobs.NewService(repo, courierService, customerService)
+	m := NewService(repo, courierService, customerService)
 
 	t.Run("job not found", func(t *testing.T) {
-		j := &jobs.Jobs{
-			ID: customer.NewID(),
+		j := &entities.Jobs{
+			ID: entities.NewID(),
 		}
 		_, err := m.FindJobByID(j.ID)
-		assert.Equal(t, jobs.ErrNotFound, err)
+		assert.Equal(t, ErrNotFound, err)
 	})
 
 	t.Run("success", func(t *testing.T) {
 		j := NewFakeJob()
-		c := &customer.Customer{
-			ID: customer.NewID(),
+		c := &entities.Customer{
+			ID: entities.NewID(),
 		}
 		cus, err := customerService.CreateCustomer(c)
 		assert.Nil(t, err)
@@ -87,39 +90,42 @@ func TestService_FindJobByID(t *testing.T)  {
 }
 
 func TestService_AssignCourierToJob(t *testing.T)  {
-	repo := jobs.NewInmem()
+	repo := NewInmem()
 	courierService := courier.NewService(courier.NewInmem())
 	customerService := customer.NewService(customer.NewInmem())
-	m := jobs.NewService(repo, courierService, customerService)
+	m := NewService(repo, courierService, customerService)
 	j := NewFakeJobCourier()
 	jo := NewFakeJob()
 
 	t.Run("job not found", func(t *testing.T) {
-		c := &courier.Courier{
-			ID: courier.NewID(),
+		c := &entities.Courier{
+			ID: entities.NewID(),
 		}
 		_, err := m.AssignCourierToJob(jo.ID, c.ID)
 		assert.Equal(t, courier.ErrCourierNotFound, err)
 	})
 
 	t.Run("success", func(t *testing.T) {
-		c := &courier.Courier{
-			ID: courier.NewID(),
+		c := &entities.Courier{
+			ID: entities.NewID(),
 		}
 
-		cus := &customer.Customer{
-			ID: customer.NewID(),
+		cus := &entities.Customer{
+			ID: entities.NewID(),
 		}
 
-		cust, err := customerService.CreateCustomer(cus)
+		cus, err := customerService.CreateCustomer(cus)
 		assert.Nil(t, err)
 
-		jo.CustomerID = cust.ID
+		jo.CustomerID = cus.ID
 
 		newJob, err := m.CreateJob(jo)
 		assert.Nil(t, err)
 
 		cou, err := courierService.CreateCourier(c)
+		assert.Nil(t, err)
+
+		_, err = courierService.ManageAvailabilityStatus(cou.ID, true)
 
 		assert.Nil(t, err)
 

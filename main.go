@@ -1,12 +1,13 @@
 package main
 
 import (
+	"deliva/api/courier"
+	"deliva/api/customer"
+	"deliva/api/entities"
+	"deliva/api/jobs"
+	"deliva/pkg/logs"
+	"deliva/pkg/middleware"
 	"fmt"
-	"github.com/fakorede-bolu/deliva/api/courier"
-	"github.com/fakorede-bolu/deliva/api/customer"
-	"github.com/fakorede-bolu/deliva/api/jobs"
-	"github.com/fakorede-bolu/deliva/pkg/logs"
-	"github.com/fakorede-bolu/deliva/pkg/middleware"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -94,7 +95,7 @@ func openDB(database string) *gorm.DB {
 	return db
 }
 func migrateDB(db *gorm.DB) error {
-	return db.AutoMigrate(courier.Courier{}, customer.Customer{}, jobs.Jobs{})
+	return db.AutoMigrate(entities.Courier{}, entities.Customer{}, entities.Jobs{})
 }
 
 

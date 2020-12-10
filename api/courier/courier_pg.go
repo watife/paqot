@@ -1,6 +1,7 @@
 package courier
 
 import (
+	"deliva/api/entities"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +15,7 @@ func NewCourierPg(db *gorm.DB) *Pg {
 	}
 }
 
-func (r *Pg) Create(c *Courier) (*Courier, error) {
+func (r *Pg) Create(c *entities.Courier) (*entities.Courier, error) {
 	cor, err := r.FindByPhoneNumber(c.PhoneNumber, c.CountryCode)
 
 	if cor != nil {
@@ -29,24 +30,31 @@ func (r *Pg) Create(c *Courier) (*Courier, error) {
 	return c, nil
 }
 
-func (r *Pg) FindByID(id ID) (*Courier, error) {
-	cd := &Courier{}
+func (r *Pg) FindByID(id entities.ID) (*entities.Courier, error) {
+	cd := &entities.Courier{}
 	if err := r.db.Where("ID = ?", id ).Take(&cd).Error; err != nil {
 		return nil, ErrCourierNotFound
 	}
 	return cd, nil
 }
 
-func (r *Pg) FindAll() ([]*Courier, error) {
+func (r *Pg) FindAll() ([]*entities.Courier, error) {
 	panic("implement me")
 }
 
-func (r *Pg) FindByPhoneNumber(phoneNumber int, countryCode string) (*Courier, error) {
-	cd := &Courier{}
+func (r *Pg) FindByPhoneNumber(phoneNumber int, countryCode string) (*entities.Courier, error) {
+	cd := &entities.Courier{}
 	if err := r.db.Where("phone_number = ? AND country_code = ?",phoneNumber,countryCode).Take(&cd).Error; err != nil {
 		return nil, err
 	}
 	return cd, nil
 }
 
+func (r *Pg) AvailabilityStatus(ID entities.ID, status bool) (bool, error) {
+	cd := &entities.Courier{}
+	if err := r.db.Model(&cd).Where("id = ?", ID).Update("availability", status).Error; err != nil {
+		return false, ErrUpdate
+	}
 
+	return true, nil
+}

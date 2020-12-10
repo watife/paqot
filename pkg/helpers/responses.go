@@ -3,7 +3,7 @@ package helpers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/fakorede-bolu/deliva/pkg/logs"
+	"deliva/pkg/logs"
 	"net/http"
 	"runtime/debug"
 )

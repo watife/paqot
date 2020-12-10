@@ -1,7 +1,9 @@
 package customer
 
+import "deliva/api/entities"
+
 type Repository interface {
-	Create(c *Customer) (*Customer, error)
-	FindByID(id ID) (*Customer, error)
-	FindByPhoneNumber(phoneNumber int, countryCode string) (*Customer, error)
+	Create(c *entities.Customer) (*entities.Customer, error)
+	FindByID(id entities.ID) (*entities.Customer, error)
+	FindByPhoneNumber(phoneNumber int, countryCode string) (*entities.Customer, error)
 }

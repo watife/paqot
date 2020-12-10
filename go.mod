@@ -1,4 +1,4 @@
-module github.com/fakorede-bolu/deliva
+module deliva
 
 go 1.15
 

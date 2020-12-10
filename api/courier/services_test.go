@@ -1,15 +1,15 @@
-package tests
+package courier
 
 import (
-	"github.com/fakorede-bolu/deliva/api/courier"
+	"deliva/api/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
 
-func NewFixtureCourier() *courier.Courier {
-	return &courier.Courier{
-		ID:             courier.NewID(),
+func NewFixtureCourier() *entities.Courier {
+	return &entities.Courier{
+		ID:             entities.NewID(),
 		FirstName:      "Boluwatife",
 		LastName:       "Fakorede",
 		CreatedAt:      time.Now(),
@@ -18,12 +18,13 @@ func NewFixtureCourier() *courier.Courier {
 		Address:        "ibadan, Nigeria",
 		PhoneNumber:    8089333186,
 		AffiliatedWith: "gig logistics",
+		Availability: true,
 	}
 }
 
 func TestService_Create(t *testing.T) {
-	repo := courier.NewInmem()
-	m := courier.NewService(repo)
+	repo := NewInmem()
+	m := NewService(repo)
 	c := NewFixtureCourier()
 	_, err := m.CreateCourier(c)
 	assert.Nil(t, err)

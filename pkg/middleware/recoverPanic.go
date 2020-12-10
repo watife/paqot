@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/fakorede-bolu/deliva/pkg/helpers"
+	"deliva/pkg/helpers"
 	"net/http"
 )
 
