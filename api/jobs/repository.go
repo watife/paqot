@@ -4,7 +4,7 @@ import "deliva/api/entities"
 
 type Repository interface {
 	Create(o *entities.Jobs) (*entities.Jobs, error)
-	FindCustomerJob(customerID entities.ID) (*entities.Jobs, error)
+	FindCustomerLastJob(customerID entities.ID) (*entities.Jobs, error)
 	FindJobByID(ID entities.ID) (*entities.Jobs, error)
 	FindAllCustomerJobs(customerID entities.ID) ([]*entities.Jobs, error)
 	CancelJob(ID, customerID entities.ID) (string, error)

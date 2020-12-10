@@ -1,7 +1,6 @@
-package tests
+package courier
 
 import (
-	"deliva/api/courier"
 	"deliva/api/entities"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -19,12 +18,13 @@ func NewFixtureCourier() *entities.Courier {
 		Address:        "ibadan, Nigeria",
 		PhoneNumber:    8089333186,
 		AffiliatedWith: "gig logistics",
+		Availability: true,
 	}
 }
 
 func TestService_Create(t *testing.T) {
-	repo := courier.NewInmem()
-	m := courier.NewService(repo)
+	repo := NewInmem()
+	m := NewService(repo)
 	c := NewFixtureCourier()
 	_, err := m.CreateCourier(c)
 	assert.Nil(t, err)

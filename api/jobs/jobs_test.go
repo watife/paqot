@@ -1,17 +1,15 @@
-package tests
+package jobs
 
 import (
 	"deliva/api/entities"
-	"deliva/api/jobs"
-	"deliva/pkg/helpers"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func NewFakeJob() *entities.Jobs {
 	return &entities.Jobs{
-		ID: helpers.NewID(),
-		CustomerID: helpers.NewID(),
+		ID: entities.NewID(),
+		CustomerID: entities.NewID(),
 		Description: "I need someone to help deliver this product",
 		DeliveryAddress: "3H, Courier services",
 		PickUpLat: 7.400470,
@@ -19,6 +17,7 @@ func NewFakeJob() *entities.Jobs {
 		DeliveryLat: 39.484940,
 		DeliveryLong: -121.220467,
 		Price: 44,
+		Status: false,
 	}
 }
 
@@ -36,6 +35,6 @@ func TestNewJob(t *testing.T) {
 	assert.NotNil(t, u.ID)
 
 	if err != nil {
-		assert.Equal(t,jobs.ErrJobFailed, err)
+		assert.Equal(t, ErrJobFailed, err)
 	}
 }

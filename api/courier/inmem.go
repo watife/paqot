@@ -7,8 +7,15 @@ type inmem struct {
 	m map[entities.ID]*entities.Courier
 }
 
-func (r *inmem) AvailabilityStatus(ID entities.ID) (bool, error) {
-	panic("implement me")
+func (r *inmem) AvailabilityStatus(ID entities.ID, status bool) (bool, error) {
+	if r.m[ID] == nil {
+		return false, ErrUpdate
+	}
+
+	r.m[ID].Availability = status
+
+	return true, nil
+
 }
 
 //newInmem create new repository

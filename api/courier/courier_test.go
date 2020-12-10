@@ -1,4 +1,4 @@
-package tests
+package courier
 
 import (
 	"deliva/api/entities"

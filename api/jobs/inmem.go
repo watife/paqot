@@ -12,8 +12,16 @@ func (i inmem) Create(o *entities.Jobs) (*entities.Jobs, error) {
 	return o, nil
 }
 
-func (i inmem) FindCustomerJob(customerID entities.ID) (*entities.Jobs, error) {
-	panic("implement me")
+func (i inmem)  FindCustomerLastJob(customerID entities.ID) (*entities.Jobs, error) {
+	var val *entities.Jobs
+	for _, v := range i.m {
+		if v.CustomerID == customerID {
+			val = v
+			break
+		}
+	}
+
+	return val, nil
 }
 
 func (i inmem) FindJobByID(ID entities.ID) (*entities.Jobs, error) {

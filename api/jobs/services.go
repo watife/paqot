@@ -43,14 +43,10 @@ func (s *service) CreateJob(o *entities.Jobs) (*entities.Jobs, error) {
 		return nil, err
 	}
 
-	jo, err := s.FindCustomerJob(job.CustomerID)
+	_ , err = s.FindCustomerJob(job.CustomerID)
 
 	if err != nil {
 		return nil, err
-	}
-
-	if jo.Status != true {
-		return nil, ErrTooManyJobs
 	}
 
 	return s.repo.Create(job)
@@ -91,7 +87,7 @@ func  (s *service) FindJobByID(ID entities.ID) (*entities.Jobs, error){
 }
 
 func  (s *service) FindCustomerJob(customerID entities.ID) (*entities.Jobs, error){
-	return s.repo.FindCustomerJob(customerID)
+	return s.repo.FindCustomerLastJob(customerID)
 }
 
 

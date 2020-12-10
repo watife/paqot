@@ -26,12 +26,18 @@ func (r *Pg) Create(o *entities.Jobs) (*entities.Jobs, error) {
 	return o, nil
 }
 
-func (r *Pg) FindCustomerJob(customerID entities.ID) (*entities.Jobs, error) {
+func (r *Pg) FindCustomerLastJob(customerID entities.ID) (*entities.Jobs, error) {
 	j := &entities.Jobs{}
 	if err := r.db.Where("customer_id", customerID ).Last(&j).Error; err != nil {
-		return nil, err
+		return nil, ErrNotFound
 	}
-	return j, nil
+
+	if j.Status {
+		return j, nil
+	}
+
+	return nil, ErrTooManyJobs
+
 }
 
 func (r *Pg) FindJobByID(ID entities.ID) (*entities.Jobs, error) {
