@@ -53,7 +53,7 @@ func Test_CreateNewCourier(t *testing.T) {
 
 	if err != nil {
 		assert.NotEqual(t, "Boluwatife", c.FirstName)
-		json.NewDecoder(resp.Body).Decode(&c)
+		_ = json.NewDecoder(resp.Body).Decode(&c)
 	}
 
 	assert.Equal(t, http.StatusCreated, resp.StatusCode)

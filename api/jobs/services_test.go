@@ -20,8 +20,8 @@ func TestService_Create(t *testing.T) {
 			ID: entities.NewID(),
 		}
 
-		_, err := customerService.FindCustomerByID(c.ID)
-		_, err = m.CreateJob(j)
+		_, _ = customerService.FindCustomerByID(c.ID)
+		_, err := m.CreateJob(j)
 		assert.Equal(t, customer.ErrCustomerNotFound, err)
 	})
 
