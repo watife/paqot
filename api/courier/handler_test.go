@@ -11,12 +11,6 @@ import (
 	"testing"
 )
 
-func checkError(err error, t *testing.T) {
-	if err != nil {
-		t.Errorf("An error occurred. %v", err)
-	}
-}
-
 func Test_CreateNewCourier(t *testing.T) {
 	repo := NewInmem()
 	service := NewService(repo)
@@ -30,11 +24,6 @@ func Test_CreateNewCourier(t *testing.T) {
 
 
 	ok, errs := h.ValidateInputs(*c)
-
-	if  !ok {
-
-	}
-
 	assert.NotNil(t, ok)
 	assert.Nil(t, errs)
 
@@ -69,6 +58,6 @@ func Test_CreateNewCourier(t *testing.T) {
 
 	assert.Equal(t, http.StatusCreated, resp.StatusCode)
 
-	json.NewDecoder(resp.Body).Decode(&c)
+	_ = json.NewDecoder(resp.Body).Decode(&c)
 	assert.Equal(t, "Boluwatife", c.FirstName)
 }
