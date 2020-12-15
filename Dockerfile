@@ -33,11 +33,11 @@ COPY --from=builder /app/main .
 COPY --from=builder /app/pkg ./pkg
 #COPY --from=builder /api/migrations ./migrations
 # COPY --from=builder /api/tls ./tls
-COPY --from=builder /app/.env.docker ./.env
+#COPY --from=builder /app/.env.docker ./.env
 
 
 # Expose port to the outside world
-EXPOSE 4000
+#EXPOSE 4000
 
 #Command to run the executable
 CMD [ "./main" ]
