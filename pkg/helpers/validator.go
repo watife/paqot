@@ -10,9 +10,7 @@ import (
 // ValidateInputs validates the inputs
 func ValidateInputs(dataSet interface{}) (bool, map[string]string) {
 
-	var validate *validator.Validate
-
-	validate = validator.New()
+	validate := validator.New()
 
 	err := validate.Struct(dataSet)
 
@@ -42,16 +40,12 @@ func ValidateInputs(dataSet interface{}) (bool, map[string]string) {
 			switch err.Tag() {
 			case "required":
 				errors[name] = "The " + name + " is required"
-				break
 			case "email":
 				errors[name] = "The " + name + " should be a valid email"
-				break
 			case "eqfield":
 				errors[name] = "The " + name + " should be equal to the " + err.Param()
-				break
 			default:
 				errors[name] = "The " + name + " is invalid"
-				break
 			}
 		}
 
@@ -63,5 +57,4 @@ func ValidateInputs(dataSet interface{}) (bool, map[string]string) {
 // ValidationError returns the error if input validation fails
 func ValidationError(w http.ResponseWriter, code int, payload interface{}) {
 	RespondJSON(w, code, payload)
-	return
 }

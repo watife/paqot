@@ -59,7 +59,7 @@ func (s *service) AssignCourierToJob(ID, courierID entities.ID) (bool, error) {
 		return false, err
 	}
 
-	if cou.Availability != true {
+	if !cou.Availability {
 		return false, ErrCourierAvailable
 	}
 
@@ -69,7 +69,7 @@ func (s *service) AssignCourierToJob(ID, courierID entities.ID) (bool, error) {
 		return false, err
 	}
 
-	if jo.Status != false {
+	if jo.Status {
 		return false, ErrJobStatus
 	}
 

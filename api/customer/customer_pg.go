@@ -16,12 +16,12 @@ func NewCustomerPg(db *gorm.DB) *Pg {
 }
 
 func (r *Pg) Create(c *entities.Customer) (*entities.Customer, error) {
-	cor, err := r.FindByPhoneNumber(c.PhoneNumber, c.CountryCode)
+	cor, _ := r.FindByPhoneNumber(c.PhoneNumber, c.CountryCode)
 
 	if cor != nil {
 		return nil, ErrCustomerExists
 	}
-	err = r.db.Create(&c).Error
+	err := r.db.Create(&c).Error
 
 	if err != nil {
 		return nil, err
