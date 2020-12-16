@@ -3,11 +3,9 @@ on:
   push:
     tags:
       - v*
-    branches:
-      - master
-      - develop
+    branches: [ production, master, develop ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ production, master, develop ]
 jobs:
   golangci:
     name: lint
