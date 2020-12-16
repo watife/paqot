@@ -1,11 +1,11 @@
-name: 'Terraform production deploy'
+name: 'Terraform staging and production deploy'
 
-on:
-  push:
-    branches: [ production ]
+on: [push, workflow_dispatch]
+  branches: [ master, production ]
+
 jobs:
-  terraform:
-    name: 'Production Plan'
+  terraform_destroy:
+    name: "Terraform Destroy"
     runs-on: ubuntu-latest
 
     # Use the deploy folder as the working directory
@@ -27,8 +27,12 @@ jobs:
         run: terraform init
 
       - name: Terraform workspace
-        run: terraform workspace select production || terraform workspace new production
+        run: terraform workspace select staging
 
-      # Checks that all Terraform configuration files adhere to a canonical format
-      - name: Terraform Plan
-        run: terraform plan
+      - name: Terraform destroy
+        run: terraform destory -auto-approve
+
+      - name: Terraform production destroy
+          if: github.ref == 'refs/heads/production' && github.event_name == 'push'
+          run: terraform destroy -auto-approve
+
