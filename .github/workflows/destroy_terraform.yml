@@ -1,8 +1,6 @@
 name: 'Terraform staging and production deploy'
 
 on:
-  push:
-    branches: [ master, production ]
   workflow_dispatch:
 
 jobs:
@@ -36,14 +34,14 @@ jobs:
 
       - name: Terraform workspace
         if: github.ref == 'refs/heads/production'
-        run: terraform workspace select staging
+        run: terraform workspace new staging
 
       - name: Terraform production workspace
         if: github.ref == 'refs/heads/production'
-        run: terraform workspace select production
+        run: terraform workspace new production
 
       - name: Terraform destroy
-        run: terraform destory -auto-approve
+        run: terraform destroy -auto-approve
 
       - name: Terraform production destroy
         if: github.ref == 'refs/heads/production' && github.event_name == 'push'

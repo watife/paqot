@@ -57,12 +57,12 @@ jobs:
       - name: Terraform staging workspace
         working-directory: ./deploy
         if: github.ref == 'refs/heads/master'
-        run: terraform workspace select staging || terraform workspace new staging
+        run: terraform workspace new staging
 
       - name: Terraform production workspace
         working-directory: ./deploy
         if: github.ref == 'refs/heads/production'
-        run: terraform workspace select production || terraform workspace new production
+        run: terraform workspace new production
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Plan
