@@ -34,13 +34,14 @@ jobs:
 
       - name: Terraform workspace
         if: github.ref == 'refs/heads/production'
-        run: terraform workspace new staging
+        run: terraform workspace new staging || terraform workspace select staging
 
       - name: Terraform production workspace
         if: github.ref == 'refs/heads/production'
-        run: terraform workspace new production
+        run: terraform workspace new production || terraform workspace select production
 
       - name: Terraform destroy
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform destroy -auto-approve
 
       - name: Terraform production destroy
