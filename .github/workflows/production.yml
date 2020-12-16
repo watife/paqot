@@ -1,0 +1,34 @@
+name: 'Terraform production deploy'
+
+on:
+  push:
+    branches: [ production ]
+jobs:
+  terraform:
+    name: 'Production Plan'
+    runs-on: ubuntu-latest
+
+    # Use the deploy folder as the working directory
+    defaults:
+      run:
+        working-directory: ./deploy
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform workspace
+        run: terraform workspace select production || terraform workspace new production
+
+      # Checks that all Terraform configuration files adhere to a canonical format
+      - name: Terraform Plan
+        run: terraform plan
