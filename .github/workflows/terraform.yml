@@ -50,11 +50,7 @@ jobs:
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
-        if:
-          contains('
-            refs/heads/mater
-            refs/heads/production
-          ', github.ref)
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production'
         run: terraform init
 
       - name: Terraform staging workspace
@@ -67,17 +63,9 @@ jobs:
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Plan
-        if:
-          contains('
-          refs/heads/mater
-          refs/heads/production
-          ', github.ref)
+        if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production'
         run: terraform plan
 
       - name: Terraform Apply
-        if:
-          contains('
-          refs/heads/mater
-          refs/heads/production
-          ', github.ref) && github.event_name == 'push'
+        if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production'
         run: terraform apply -auto-approve
