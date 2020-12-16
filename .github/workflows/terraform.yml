@@ -34,11 +34,6 @@ jobs:
     name: 'Staging and Production Plan and Apply'
     runs-on: ubuntu-latest
 
-    # Use the deploy folder as the working directory
-    defaults:
-      run:
-        working-directory: ./deploy
-
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
@@ -50,22 +45,27 @@ jobs:
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
+        working-directory: ./deploy
         if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production'
         run: terraform init
 
       - name: Terraform staging workspace
+        working-directory: ./deploy
         if: github.ref == 'refs/heads/master'
         run: terraform workspace select staging || terraform workspace new staging
 
       - name: Terraform production workspace
+        working-directory: ./deploy
         if: github.ref == 'refs/heads/production'
         run: terraform workspace select production || terraform workspace new production
 
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Plan
+        working-directory: ./deploy
         if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production'
         run: terraform plan
 
       - name: Terraform Apply
+        working-directory: ./deploy
         if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production'
         run: terraform apply -auto-approve

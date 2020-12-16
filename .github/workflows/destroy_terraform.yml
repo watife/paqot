@@ -1,7 +1,6 @@
 name: 'Terraform staging and production deploy'
 
-on:
-  workflow_dispatch:
+on: [push, workflow_dispatch]
 
 jobs:
   terraform_destroy:
