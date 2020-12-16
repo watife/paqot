@@ -19,7 +19,7 @@ ENV GO111MODULE=on
 RUN go get ./...
 
 # Build the Go api
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build ./... -a -installsuffix cgo -o main .
 
 # Start a new stage from scratch
 FROM alpine:latest
