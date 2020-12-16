@@ -67,10 +67,10 @@ jobs:
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Plan
         working-directory: ./deploy
-        if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production'
         run: terraform plan
 
       - name: Terraform Apply
         working-directory: ./deploy
-        if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production'
         run: terraform apply -auto-approve
