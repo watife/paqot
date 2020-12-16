@@ -1,9 +1,7 @@
-name: Build and Push
+name: "Build and Push"
 
 on:
   push:
-    branches: [ production, master ]
-  pull_request:
     branches: [ production, master ]
 
 jobs:

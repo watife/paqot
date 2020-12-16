@@ -3,8 +3,6 @@ name: 'Terraform'
 on:
   push:
       branches: [ master, production ]
-  pull_request:
-      branches: [ master, production ]
 jobs:
   terraform:
     name: 'Validate Terraform'
